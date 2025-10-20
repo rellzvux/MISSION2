@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>XERA DOWNLOAD</title>
+<style>
+  body {
+    margin: 0;
+    background: #000;
+    color: #fff;
+    font-family: Arial, sans-serif;
+    overflow: hidden;
+    text-align: center;
+  }
+
+  canvas#bgCanvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: -1;
+  }
+
+  .container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(20, 20, 20, 0.8);
+    border: 1px solid #333;
+    border-radius: 16px;
+    padding: 30px;
+    width: 90%;
+    max-width: 400px;
+    box-shadow: 0 0 25px rgba(0, 255, 255, 0.2);
+  }
+
+  h2 {
+    color: #0ff;
+    margin-bottom: 10px;
+  }
+
+  p {
+    font-size: 14px;
+    color: #ccc;
+    margin-bottom: 25px;
+  }
+
+  button {
+    width: 100%;
+    padding: 12px;
+    margin: 10px 0;
+    border: none;
+    border-radius: 10px;
+    font-size: 16px;
+    cursor: pointer;
+    color: white;
+    background: linear-gradient(270deg, #ff0000, #ff9900, #00ff00, #00ffff, #0000ff, #ff00ff);
+    background-size: 600% 600%;
+    animation: rainbow 5s ease infinite;
+    transition: transform 0.2s, opacity 0.3s;
+    position: relative;
+  }
+
+  button:hover:not(:disabled) {
+    transform: scale(1.05);
+  }
+
+  button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  @keyframes rainbow {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+
+  /* Spinner Loading */
+  .loading::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    right: 20px;
+    width: 18px;
+    height: 18px;
+    border: 2px solid rgba(255,255,255,0.4);
+    border-top-color: white;
+    border-radius: 50%;
+    transform: translateY(-50%);
+    animation: spin 0.8s linear infinite;
+  }
+
+  @keyframes spin {
+    0% { transform: translateY(-50%) rotate(0deg); }
+    100% { transform: translateY(-50%) rotate(360deg); }
+  }
+</style>
+</head>
+<body>
+<canvas id="bgCanvas"></canvas>
+
+<div class="container">
+  <h2>DOWNLOAD XERA V4.1</h2>
+  <p>TEKAN TOMBOL DIBAWAH UNTUK MEMBUKA AKSES DOWNLOAD</p>
+
+  <button id="joinBtn" onclick="handleJoin()">📢 JOIN CHANNEL WHATSAPP</button>
+  <button id="shareBtn" onclick="handleShare()">📤 BAGIKAN TAUTAN</button>
+  <button id="nextBtn" disabled onclick="handleNext()">CONTINUE DOWNLOAD</button>
+</div>
+
+<script>
+  let joined = false;
+  let shared = false;
+
+  function handleJoin() {
+    const btn = document.getElementById("joinBtn");
+    setLoading(btn, true);
+    setTimeout(() => {
+      joined = true;
+      setLoading(btn, false);
+      window.open("https://whatsapp.com/channel/0029VbAOggq3mFYCOUddKZ2j", "_blank");
+      checkTasks();
+    }, 2000);
+  }
+
+  function handleShare() {
+    const btn = document.getElementById("shareBtn");
+    setLoading(btn, true);
+    setTimeout(() => {
+      shared = true;
+      setLoading(btn, false);
+      const text = `> APK BUG\n> BISA BUG SEPUASNYA\n> SENDER ON TERUS\n> 100% WORK\nCHANNEL LINK\nhttps://whatsapp.com/channel/0029VbAOggq3mFYCOUddKZ2j\n\n/JANGAN HAPUS SUMBER/`;
+      const url = "https://wa.me/?text=" + encodeURIComponent(text);
+      window.open(url, "_blank");
+      checkTasks();
+    }, 2000);
+  }
+
+  function handleNext() {
+    const btn = document.getElementById("nextBtn");
+    setLoading(btn, true);
+    setTimeout(() => {
+      setLoading(btn, false);
+      window.location.href = "https://xeraunlockv1.vercel.app/";
+    }, 2000);
+  }
+
+  function setLoading(button, state) {
+    if (state) {
+      button.classList.add("loading");
+      button.disabled = true;
+      button.dataset.originalText = button.innerText;
+      button.innerText = "OTEWE KENTOD";
+    } else {
+      button.classList.remove("loading");
+      button.disabled = false;
+      button.innerText = button.dataset.originalText;
+    }
+  }
+
+  function checkTasks() {
+    const btn = document.getElementById("nextBtn");
+    if (joined && shared) {
+      btn.disabled = false;
+      btn.innerText = "✅ LANJUT";
+    }
+  }
+
+  // Background Particles
+  const canvas = document.getElementById("bgCanvas");
+  const ctx = canvas.getContext("2d");
+  let particles = [];
+
+  function resizeCanvas() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    const count = window.innerWidth < 600 ? 60 : 120;
+    particles = [];
+    for (let i=0;i<count;i++) {
+      particles.push({
+        x: Math.random()*canvas.width,
+        y: Math.random()*canvas.height,
+        vx: (Math.random()-0.5)*1,
+        vy: (Math.random()-0.5)*1,
+        r: 1.2
+      });
+    }
+  }
+
+  function animate() {
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    for (let p of particles) {
+      p.x += p.vx;
+      p.y += p.vy;
+      if (p.x<0||p.x>canvas.width) p.vx*=-1;
+      if (p.y<0||p.y>canvas.height) p.vy*=-1;
+      ctx.beginPath();
+      ctx.arc(p.x,p.y,p.r,0,2*Math.PI);
+      ctx.fillStyle="white";
+      ctx.fill();
+    }
+    for (let i=0;i<particles.length;i++) {
+      for (let j=i+1;j<particles.length;j++) {
+        let dx = particles[i].x - particles[j].x;
+        let dy = particles[i].y - particles[j].y;
+        let dist = Math.sqrt(dx*dx+dy*dy);
+        if (dist<120) {
+          ctx.beginPath();
+          ctx.moveTo(particles[i].x,particles[i].y);
+          ctx.lineTo(particles[j].x,particles[j].y);
+          ctx.strokeStyle="rgba(255,255,255,0.2)";
+          ctx.lineWidth = 0.3;
+          ctx.stroke();
+        }
+      }
+    }
+    requestAnimationFrame(animate);
+  }
+
+  window.addEventListener("resize", resizeCanvas);
+  resizeCanvas();
+  animate();
+</script>
+</body>
+</html>
